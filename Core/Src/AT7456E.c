@@ -1,4 +1,16 @@
-#include "AT7456E.h"
+/**
+ * @file AT7456E.c
+ * @author 龙无痕 (1365149109@qq.com)
+ * @brief AT7456E OSD驱动源文件
+ * @version 1.0
+ * @date 2026-01-07
+ * 
+ * @copyright Copyright (c) 2026
+ * 
+ * @note 本代码仅供学习与研究使用。
+ * @note 转载请保留出处，禁止用于商业用途。
+ * @note git仓库地址：https://github.com/longwuhen321/Embedded_Project/tree/STM32F103C8T6_AT7456E
+ */
 #include "AT7456E_font.h"
 #include "main.h"
 

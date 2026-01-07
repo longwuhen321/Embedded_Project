@@ -1,4 +1,16 @@
-#ifndef __AT7456E_H
+/**
+ * @file AT7456E.h
+ * @author ÁúÎŞºÛ (1365149109@qq.com)
+ * @brief AT7456E OSDÇı¶¯Í·ÎÄ¼ş
+ * @version 1.0
+ * @date 2026-01-07
+ * 
+ * @copyright Copyright (c) 2026
+ * 
+ * @note ±¾´úÂë½ö¹©Ñ§Ï°ÓëÑĞ¾¿Ê¹ÓÃ¡£
+ * @note ×ªÔØÇë±£Áô³ö´¦£¬½ûÖ¹ÓÃÓÚÉÌÒµÓÃÍ¾¡£
+ * @note git²Ö¿âµØÖ·£ºhttps://github.com/longwuhen321/Embedded_Project/tree/STM32F103C8T6_AT7456E
+ */
 #define __AT7456E_H
 
 #ifdef __cplusplus
@@ -13,13 +25,13 @@ extern "C" {
 #define AT7456E_CS_LOW()   HAL_GPIO_WritePin(AT7456E_CS_GPIO_Port, AT7456E_CS_Pin, GPIO_PIN_RESET)
 #define AT7456E_CS_HIGH()  HAL_GPIO_WritePin(AT7456E_CS_GPIO_Port, AT7456E_CS_Pin, GPIO_PIN_SET)
     
-// å‚è€ƒæ‰‹å†Œç¬¬18é¡µ SPIæ¥å£è¯´æ˜ä¸­çš„å›¾15 å›¾16
-#define DIR_READ(a) ((a) | (1 << 7))    // è¯»æ“ä½œè®¾ç½®A7=1
-#define DIR_WRITE(a) ((a) & 0x7f)       // å†™æ“ä½œè®¾ç½®A7=0
+// ²Î¿¼ÊÖ²áµÚ18Ò³ SPI½Ó¿ÚËµÃ÷ÖĞµÄÍ¼15 Í¼16
+#define DIR_READ(a) ((a) | (1 << 7))    // ¶Á²Ù×÷ÉèÖÃA7=1
+#define DIR_WRITE(a) ((a) & 0x7f)       // Ğ´²Ù×÷ÉèÖÃA7=0
 
-#define OSD_CHARS_PER_ROW	30  // æ¯è¡Œå­—ç¬¦æ•°ç›®
+#define OSD_CHARS_PER_ROW	30  // Ã¿ĞĞ×Ö·ûÊıÄ¿
 
-// å¯„å­˜å™¨åœ°å€å®šä¹‰ è¯»æ—¶éœ€è¦ä¸ä¸Š 0x80;
+// ¼Ä´æÆ÷µØÖ·¶¨Òå ¶ÁÊ±ĞèÒªÓëÉÏ 0x80;
 #define AT7456E_VM0             0X00
 #define AT7456E_VM1             0X01
 #define AT7456E_HOS             0X02
@@ -35,129 +47,129 @@ extern "C" {
 #define AT7456E_OSDM            0X0C
 #define AT7456E_OSDBL           0X6C
 #define AT7456E_STAT            0XA0
-#define	AT7456E_DMDO            0x30	// æ˜¾ç¤ºå†…å­˜æ•°æ®è¾“å‡º
-#define	AT7456E_CMDO            0x40	// å­—ç¬¦å†…å­˜æ•°æ®è¾“å‡º
+#define	AT7456E_DMDO            0x30	// ÏÔÊ¾ÄÚ´æÊı¾İÊä³ö
+#define	AT7456E_CMDO            0x40	// ×Ö·ûÄÚ´æÊı¾İÊä³ö
 
-#define AT7456E_NVM_RAM         0x50    // å°†NVMä¸­çš„å­—åº“è¯»å–åˆ°é•œåƒRAMä¸­
-#define AT7456E_RAM_NVM         0xA0    // å°†é•œåƒRAMä¸­çš„å­—åº“æ•°æ®å†™åˆ°NVMä¸­
+#define AT7456E_NVM_RAM         0x50    // ½«NVMÖĞµÄ×Ö¿â¶ÁÈ¡µ½¾µÏñRAMÖĞ
+#define AT7456E_RAM_NVM         0xA0    // ½«¾µÏñRAMÖĞµÄ×Ö¿âÊı¾İĞ´µ½NVMÖĞ
 
-// DMMå¯„å­˜å™¨å„ä½å®šä¹‰
-#define DMM_BIT_AUTO_INC_CHAR       ((uint8_t)(1 << 7))  // ä½7ï¼šå­—ç¬¦å­˜å‚¨å™¨è‡ªåŠ¨é€’å¢æ¨¡å¼
-#define DMM_BIT_OP_MODE             ((uint8_t)(1 << 6))  // ä½6ï¼šæ“ä½œæ¨¡å¼é€‰æ‹©(è®¾ç½®ä¸º1æ—¶ä¸º8ä½,0ä¸º16ä½)
-#define DMM_BIT_ATTR_LBC            ((uint8_t)(1 << 5))  // ä½5ï¼šæœ¬åœ°èƒŒæ™¯æ§åˆ¶(LBC)
-#define DMM_BIT_ATTR_BLK            ((uint8_t)(1 << 4))  // ä½4ï¼šé—ªçƒ(BLK)
-#define DMM_BIT_ATTR_INV            ((uint8_t)(1 << 3))  // ä½3ï¼šåè‰²(INV)
-#define DMM_BIT_CLEAR_MEM           ((uint8_t)(1 << 2))  // ä½2ï¼šæ¸…é™¤æ˜¾ç¤ºå­˜å‚¨å™¨
-#define DMM_BIT_VSYNC_CLEAR         ((uint8_t)(1 << 1))  // ä½1ï¼šå‚ç›´åŒæ­¥æ¸…é™¤
-#define DMM_BIT_AUTO_INC_DISPLAY    ((uint8_t)(1 << 0))  // ä½0ï¼šæ˜¾ç¤ºå­˜å‚¨å™¨è‡ªåŠ¨é€’å¢æ¨¡å¼
-#define DMM_NONE                    ((uint8_t)0x00)      // é»˜è®¤å±æ€§
+// DMM¼Ä´æÆ÷¸÷Î»¶¨Òå
+#define DMM_BIT_AUTO_INC_CHAR       ((uint8_t)(1 << 7))  // Î»7£º×Ö·û´æ´¢Æ÷×Ô¶¯µİÔöÄ£Ê½
+#define DMM_BIT_OP_MODE             ((uint8_t)(1 << 6))  // Î»6£º²Ù×÷Ä£Ê½Ñ¡Ôñ(ÉèÖÃÎª1Ê±Îª8Î»,0Îª16Î»)
+#define DMM_BIT_ATTR_LBC            ((uint8_t)(1 << 5))  // Î»5£º±¾µØ±³¾°¿ØÖÆ(LBC)
+#define DMM_BIT_ATTR_BLK            ((uint8_t)(1 << 4))  // Î»4£ºÉÁË¸(BLK)
+#define DMM_BIT_ATTR_INV            ((uint8_t)(1 << 3))  // Î»3£º·´É«(INV)
+#define DMM_BIT_CLEAR_MEM           ((uint8_t)(1 << 2))  // Î»2£ºÇå³ıÏÔÊ¾´æ´¢Æ÷
+#define DMM_BIT_VSYNC_CLEAR         ((uint8_t)(1 << 1))  // Î»1£º´¹Ö±Í¬²½Çå³ı
+#define DMM_BIT_AUTO_INC_DISPLAY    ((uint8_t)(1 << 0))  // Î»0£ºÏÔÊ¾´æ´¢Æ÷×Ô¶¯µİÔöÄ£Ê½
+#define DMM_NONE                    ((uint8_t)0x00)      // Ä¬ÈÏÊôĞÔ
 
-// å•å­—ç¬¦æ˜¾ç¤ºå±æ€§ä½å®šä¹‰
-#define DMDI_ATTR_LBC               ((uint8_t)(1 << 7))  // ä½7: æœ¬åœ°èƒŒæ™¯æ§åˆ¶(LBC)
-#define DMDI_ATTR_BLK               ((uint8_t)(1 << 6))  // ä½6: é—ªçƒ(BLK)
-#define DMDI_ATTR_INV               ((uint8_t)(1 << 5))  // ä½5: åè‰²(INV)
-#define DMDI_ATTR_CA8               ((uint8_t)(1 << 4))  // ä½4: å­—ç¬¦åœ°å€ç¬¬8ä½
-#define DMDI_ATTR_NONE              ((uint8_t)0x00)      // é»˜è®¤å±æ€§
+// µ¥×Ö·ûÏÔÊ¾ÊôĞÔÎ»¶¨Òå
+#define DMDI_ATTR_LBC               ((uint8_t)(1 << 7))  // Î»7: ±¾µØ±³¾°¿ØÖÆ(LBC)
+#define DMDI_ATTR_BLK               ((uint8_t)(1 << 6))  // Î»6: ÉÁË¸(BLK)
+#define DMDI_ATTR_INV               ((uint8_t)(1 << 5))  // Î»5: ·´É«(INV)
+#define DMDI_ATTR_CA8               ((uint8_t)(1 << 4))  // Î»4: ×Ö·ûµØÖ·µÚ8Î»
+#define DMDI_ATTR_NONE              ((uint8_t)0x00)      // Ä¬ÈÏÊôĞÔ
 
-// è§†é¢‘åˆ¶å¼æšä¸¾
+// ÊÓÆµÖÆÊ½Ã¶¾Ù
 typedef enum {
-    VIDEO_STD_UNKNOWN   = 0,    // æœªçŸ¥åˆ¶å¼
-    VIDEO_STD_PAL       = 1,    // NTSCåˆ¶å¼
-    VIDEO_STD_NTSC      = 2     // PALåˆ¶å¼    
+    VIDEO_STD_UNKNOWN   = 0,    // Î´ÖªÖÆÊ½
+    VIDEO_STD_PAL       = 1,    // NTSCÖÆÊ½
+    VIDEO_STD_NTSC      = 2     // PALÖÆÊ½    
 } Video_Standard;
 
-// OSDæ˜¾ç¤ºçŠ¶æ€æšä¸¾
+// OSDÏÔÊ¾×´Ì¬Ã¶¾Ù
 typedef enum {
-    OSD_STATE_OFF = 0,  // å…³é—­OSDæ˜¾ç¤º
-    OSD_STATE_ON  = 1   // å¼€å¯OSDæ˜¾ç¤º
+    OSD_STATE_OFF = 0,  // ¹Ø±ÕOSDÏÔÊ¾
+    OSD_STATE_ON  = 1   // ¿ªÆôOSDÏÔÊ¾
 } AT7456E_OSD_State;
 
-/***************** VM1å¯„å­˜å™¨ä½å®šä¹‰ï¼ˆè§†é¢‘æ¨¡å¼å¯„å­˜å™¨1ï¼‰*****************/
-// ä½7ï¼šèƒŒæ™¯æ¨¡å¼
-#define VM1_BACKGROUND_MODE_LOCAL    0x00    // 0ï¼šæœ¬åœ°èƒŒæ™¯æ§åˆ¶ï¼ˆç”±DMM[5]å’ŒDMDI[7]æ§åˆ¶ï¼‰
-#define VM1_BACKGROUND_MODE_GRAY     0x80    // 1ï¼šæ‰€æœ‰èƒŒæ™¯åƒç´ è®¾ä¸ºç°è‰²
+/***************** VM1¼Ä´æÆ÷Î»¶¨Òå£¨ÊÓÆµÄ£Ê½¼Ä´æÆ÷1£©*****************/
+// Î»7£º±³¾°Ä£Ê½
+#define VM1_BACKGROUND_MODE_LOCAL    0x00    // 0£º±¾µØ±³¾°¿ØÖÆ£¨ÓÉDMM[5]ºÍDMDI[7]¿ØÖÆ£©
+#define VM1_BACKGROUND_MODE_GRAY     0x80    // 1£ºËùÓĞ±³¾°ÏñËØÉèÎª»ÒÉ«
 
-// ä½[6:4]ï¼šèƒŒæ™¯äº®åº¦ï¼ˆç°è‰²ç”µå¹³ç™¾åˆ†æ¯”ï¼‰
+// Î»[6:4]£º±³¾°ÁÁ¶È£¨»ÒÉ«µçÆ½°Ù·Ö±È£©
 #define VM1_GRAY_LEVEL_0      (0x00 << 4)    // 000 = 0%
 #define VM1_GRAY_LEVEL_7      (0x01 << 4)    // 001 = 7%
 #define VM1_GRAY_LEVEL_14     (0x02 << 4)    // 010 = 14%
 #define VM1_GRAY_LEVEL_21     (0x03 << 4)    // 011 = 21%
-#define VM1_GRAY_LEVEL_28     (0x04 << 4)    // 100 = 28%ï¼ˆé»˜è®¤å€¼ï¼‰
+#define VM1_GRAY_LEVEL_28     (0x04 << 4)    // 100 = 28%£¨Ä¬ÈÏÖµ£©
 #define VM1_GRAY_LEVEL_35     (0x05 << 4)    // 101 = 35%
 #define VM1_GRAY_LEVEL_42     (0x06 << 4)    // 110 = 42%
 #define VM1_GRAY_LEVEL_49     (0x07 << 4)    // 111 = 49%
 
-// ä½[3:2]ï¼šé—ªçƒæ—¶é—´
-#define VM1_BLINK_TIME_2FIELDS   (0x00 << 2)  // 00 = 2åœºï¼ˆNTSC:33ms, PAL:40msï¼‰
-#define VM1_BLINK_TIME_4FIELDS   (0x01 << 2)  // 01 = 4åœºï¼ˆNTSC:67ms, PAL:80msï¼‰ï¼ˆé»˜è®¤ï¼‰
-#define VM1_BLINK_TIME_6FIELDS   (0x02 << 2)  // 10 = 6åœºï¼ˆNTSC:100ms, PAL:120msï¼‰
-#define VM1_BLINK_TIME_8FIELDS   (0x03 << 2)  // 11 = 8åœºï¼ˆNTSC:133ms, PAL:160msï¼‰
+// Î»[3:2]£ºÉÁË¸Ê±¼ä
+#define VM1_BLINK_TIME_2FIELDS   (0x00 << 2)  // 00 = 2³¡£¨NTSC:33ms, PAL:40ms£©
+#define VM1_BLINK_TIME_4FIELDS   (0x01 << 2)  // 01 = 4³¡£¨NTSC:67ms, PAL:80ms£©£¨Ä¬ÈÏ£©
+#define VM1_BLINK_TIME_6FIELDS   (0x02 << 2)  // 10 = 6³¡£¨NTSC:100ms, PAL:120ms£©
+#define VM1_BLINK_TIME_8FIELDS   (0x03 << 2)  // 11 = 8³¡£¨NTSC:133ms, PAL:160ms£©
 
-// ä½[1:0]ï¼šé—ªçƒå ç©ºæ¯”ï¼ˆäº®:æš—ï¼‰
+// Î»[1:0]£ºÉÁË¸Õ¼¿Õ±È£¨ÁÁ:°µ£©
 #define VM1_BLINK_DUTY_1_1      (0x00 << 0)  // 00 = BT : BT
-#define VM1_BLINK_DUTY_1_2      (0x01 << 0)  // 01 = BT : (2Ã—BT)
-#define VM1_BLINK_DUTY_1_3      (0x02 << 0)  // 10 = BT : (3Ã—BT)
-#define VM1_BLINK_DUTY_3_1      (0x03 << 0)  // 11 = (3Ã—BT) : BTï¼ˆé»˜è®¤ï¼‰
+#define VM1_BLINK_DUTY_1_2      (0x01 << 0)  // 01 = BT : (2¡ÁBT)
+#define VM1_BLINK_DUTY_1_3      (0x02 << 0)  // 10 = BT : (3¡ÁBT)
+#define VM1_BLINK_DUTY_3_1      (0x03 << 0)  // 11 = (3¡ÁBT) : BT£¨Ä¬ÈÏ£©
 
 
 
-/**************** æ˜¾ç¤ºå­—ç¬¦ç›¸å…³ ****************/
+/**************** ÏÔÊ¾×Ö·ûÏà¹Ø ****************/
 typedef enum {
-    Show_Char_16bit = 0,    // 16ä½æ¨¡å¼
-    Show_Char_8bit          // 8ä½æ¨¡å¼
+    Show_Char_16bit = 0,    // 16Î»Ä£Ê½
+    Show_Char_8bit          // 8Î»Ä£Ê½
 } AT7456E_ShowChar_Mode;
 
-// æ˜¾ç¤ºå­—ç¬¦ç»“æ„(éè‡ªåŠ¨é€’å¢æ¨¡å¼)
+// ÏÔÊ¾×Ö·û½á¹¹(·Ç×Ô¶¯µİÔöÄ£Ê½)
 typedef struct {
-    AT7456E_ShowChar_Mode mode;     // å­—ç¬¦æ˜¾ç¤ºæ¨¡å¼ (8ä½æ¨¡å¼æˆ–16ä½æ¨¡å¼)
-    uint16_t    addr;               // å­—ç¬¦æ˜¾ç¤ºåœ°å€ (8ä½æ¨¡å¼ï¼š0-511; 16ä½æ¨¡å¼ï¼š0-255)
-    uint8_t     attr;               // å­—ç¬¦æ˜¾ç¤ºå±æ€§ (8ä½æ¨¡å¼ï¼šé…ç½®DMDIå¯„å­˜å™¨å®ç°å•å­—ç¬¦å±æ€§è®¾ç½®ï¼Œ16ä½æ¨¡å¼ï¼šé…ç½®DMMå¯„å­˜å™¨ç»Ÿä¸€è®¾ç½®å±æ€§)
-    uint8_t     row;                // å­—ç¬¦æ˜¾ç¤ºè¡Œå· (0-15)
-    uint8_t     col;                // å­—ç¬¦æ˜¾ç¤ºåˆ—å· (0-29)
+    AT7456E_ShowChar_Mode mode;     // ×Ö·ûÏÔÊ¾Ä£Ê½ (8Î»Ä£Ê½»ò16Î»Ä£Ê½)
+    uint16_t    addr;               // ×Ö·ûÏÔÊ¾µØÖ· (8Î»Ä£Ê½£º0-511; 16Î»Ä£Ê½£º0-255)
+    uint8_t     attr;               // ×Ö·ûÏÔÊ¾ÊôĞÔ (8Î»Ä£Ê½£ºÅäÖÃDMDI¼Ä´æÆ÷ÊµÏÖµ¥×Ö·ûÊôĞÔÉèÖÃ£¬16Î»Ä£Ê½£ºÅäÖÃDMM¼Ä´æÆ÷Í³Ò»ÉèÖÃÊôĞÔ)
+    uint8_t     row;                // ×Ö·ûÏÔÊ¾ĞĞºÅ (0-15)
+    uint8_t     col;                // ×Ö·ûÏÔÊ¾ÁĞºÅ (0-29)
 } AT7456E_ShowChar_t;
 
-// æ˜¾ç¤ºå­—ç¬¦ç»“æ„(è‡ªåŠ¨é€’å¢æ¨¡å¼)
+// ÏÔÊ¾×Ö·û½á¹¹(×Ô¶¯µİÔöÄ£Ê½)
 typedef struct {
-    AT7456E_ShowChar_Mode mode;     // æ˜¾ç¤ºå­—ç¬¦æ¨¡å¼ (8ä½æ¨¡å¼æˆ–16ä½æ¨¡å¼)
-    uint8_t    *addr_array;        // å­—ç¬¦æ˜¾ç¤ºåœ°å€æ•°ç»„æŒ‡é’ˆ (0-255)
-    uint8_t     length;             // å­—ç¬¦åœ°å€æ•°ç»„é•¿åº¦
-    uint8_t     attr;               // å­—ç¬¦æ˜¾ç¤ºå±æ€§ (8ä½æ¨¡å¼å¯å•å­—ç¬¦è®¾ç½®ï¼Œ16ä½æ¨¡å¼ç»Ÿä¸€è®¾ç½®DMMå¯„å­˜å™¨)
-    uint8_t     row;                // æ˜¾ç¤ºè¡Œå· (0-15)
-    uint8_t     col;                // æ˜¾ç¤ºåˆ—å· (0-29)
+    AT7456E_ShowChar_Mode mode;     // ÏÔÊ¾×Ö·ûÄ£Ê½ (8Î»Ä£Ê½»ò16Î»Ä£Ê½)
+    uint8_t    *addr_array;        // ×Ö·ûÏÔÊ¾µØÖ·Êı×éÖ¸Õë (0-255)
+    uint8_t     length;             // ×Ö·ûµØÖ·Êı×é³¤¶È
+    uint8_t     attr;               // ×Ö·ûÏÔÊ¾ÊôĞÔ (8Î»Ä£Ê½¿Éµ¥×Ö·ûÉèÖÃ£¬16Î»Ä£Ê½Í³Ò»ÉèÖÃDMM¼Ä´æÆ÷)
+    uint8_t     row;                // ÏÔÊ¾ĞĞºÅ (0-15)
+    uint8_t     col;                // ÏÔÊ¾ÁĞºÅ (0-29)
 } AT7456E_ShowChar_AutoInc_t;
 
 
-/**************** å­—åº“ç›¸å…³ ****************/
-// å­—åº“å†™å…¥æ¨¡å¼æšä¸¾
+/**************** ×Ö¿âÏà¹Ø ****************/
+// ×Ö¿âĞ´ÈëÄ£Ê½Ã¶¾Ù
 typedef enum {
-    AT7456E_WRITE_FONT_NORMAL = 0,   // æ™®é€šå†™å…¥æ¨¡å¼
-    AT7456E_WRITE_FONT_AUTO_INC = 1  // è‡ªåŠ¨é€’å¢å†™å…¥æ¨¡å¼
+    AT7456E_WRITE_FONT_NORMAL = 0,   // ÆÕÍ¨Ğ´ÈëÄ£Ê½
+    AT7456E_WRITE_FONT_AUTO_INC = 1  // ×Ô¶¯µİÔöĞ´ÈëÄ£Ê½
 } AT7456E_WriteFont_Mode;
 
-#define AT7456E_FONT_SIZE 54  // æ¯ä¸ªå­—ç¬¦å­—ä½“æ•°æ®å¤§å°ï¼Œå•ä½ï¼šå­—èŠ‚
+#define AT7456E_FONT_SIZE 54  // Ã¿¸ö×Ö·û×ÖÌåÊı¾İ´óĞ¡£¬µ¥Î»£º×Ö½Ú
 
-// å­—åº“å­—ç¬¦æ•°æ®ç»“æ„
+// ×Ö¿â×Ö·ûÊı¾İ½á¹¹
 typedef struct {
-    uint16_t addr;           // å­—ç¬¦åœ°å€ (0-511)
+    uint16_t addr;           // ×Ö·ûµØÖ· (0-511)
     
     union{
-        uint8_t *data_array;                // å­—ç¬¦å­—ä½“æ•°æ®æ•°ç»„æŒ‡é’ˆ (54å­—èŠ‚)
-        const uint8_t *const_data_array;    // constç±»å‹å­—ç¬¦å­—ä½“æ•°æ®æ•°ç»„æŒ‡é’ˆ (54å­—èŠ‚)
+        uint8_t *data_array;                // ×Ö·û×ÖÌåÊı¾İÊı×éÖ¸Õë (54×Ö½Ú)
+        const uint8_t *const_data_array;    // constÀàĞÍ×Ö·û×ÖÌåÊı¾İÊı×éÖ¸Õë (54×Ö½Ú)
     }data;
 } AT7456E_CharFont_t;
 
-/**************** SPIé€šä¿¡ç›¸å…³å‡½æ•° ****************/
+/**************** SPIÍ¨ĞÅÏà¹Øº¯Êı ****************/
 void AT7456E_SPI_Send(const uint8_t *data, uint16_t len);
 void AT7456E_SPI_SendByte(uint8_t data);
 uint8_t AT7456E_Read_Reg(uint8_t addr);
 void AT7456E_Write_Reg(uint8_t addr, uint8_t data);
 
-/**************** AT7456Eåˆå§‹åŒ–ç›¸å…³å‡½æ•° ****************/
+/**************** AT7456E³õÊ¼»¯Ïà¹Øº¯Êı ****************/
 void AT7456E_Init(void);
 void AT7456E_VM1_Init(void);
 
 
-/**************** æ˜¾ç¤ºå­—ç¬¦ç›¸å…³å‡½æ•°å®ç° ****************/
+/**************** ÏÔÊ¾×Ö·ûÏà¹Øº¯ÊıÊµÏÖ ****************/
 bool AT7456E_WriteChar(AT7456E_ShowChar_t show_char);
 bool AT7456E_WriteChar_8bit(AT7456E_ShowChar_t show_char);
 bool AT7456E_WriteChar_16bit(AT7456E_ShowChar_t show_char);
@@ -165,21 +177,21 @@ bool AT7456E_WriteChar_AutoInc(AT7456E_ShowChar_AutoInc_t show_char_autoinc);
 bool AT7456E_WriteChar_AutoInc_8bit(AT7456E_ShowChar_AutoInc_t show_char_autoinc);
 bool AT7456E_WriteChar_AutoInc_16bit(AT7456E_ShowChar_AutoInc_t show_char_autoinc);
 
-/**************** å­—åº“ç›¸å…³å‡½æ•°å®ç° ****************/
+/**************** ×Ö¿âÏà¹Øº¯ÊıÊµÏÖ ****************/
 bool AT7456E_Check_Font(void);
 bool AT7456E_ReadChar_Font(AT7456E_CharFont_t *font);
 bool AT7456E_WriteChar_Font(const AT7456E_CharFont_t *write_font, AT7456E_WriteFont_Mode write_font_mode);
 bool AT7456E_ModifyChar_Byte_Font(uint16_t char_addr, uint8_t byte_pos, uint8_t new_byte);
 bool AT7456E_ModifyChar_ByteArray_Font(uint16_t char_addr, uint8_t byte_pos, const uint8_t *modify_array, uint8_t len);
 
-/**************** å·¥å…·ç›¸å…³å‡½æ•°å®ç° ****************/
+/**************** ¹¤¾ßÏà¹Øº¯ÊıÊµÏÖ ****************/
 void AT7456E_ClearSRAM(void);
 void AT7456E_Clear_Show(void);
 void AT7456E_Set_OSD_State(AT7456E_OSD_State state);
 bool AT7456E_NVM_Operation(uint8_t operation);
 void AT7456E_Show_Full_Icon(bool hight_addr);
 
-/**************** æµ‹è¯•ç›¸å…³å‡½æ•°å®ç° ****************/
+/**************** ²âÊÔÏà¹Øº¯ÊıÊµÏÖ ****************/
 void AT7456E_TEST(void);
 void AT7456E_WriteChar_Test(bool status);
 void AT7456E_WriteChar_AutoInc_Test(void);

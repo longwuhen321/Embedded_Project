@@ -11,6 +11,7 @@
  * @note 转载请保留出处，禁止用于商业用途。
  * @note git仓库地址：https://github.com/longwuhen321/Embedded_Project/tree/STM32F103C8T6_AT7456E
  */
+#ifndef __AT7456E_H
 #define __AT7456E_H
 
 #ifdef __cplusplus

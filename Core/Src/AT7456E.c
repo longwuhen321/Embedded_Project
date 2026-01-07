@@ -432,7 +432,7 @@ bool AT7456E_ReadChar_Font(AT7456E_CharFont_t *read_font)
 
     uint16_t char_addr = read_font->addr;
     // 关闭 OSD 显示
-    AT7456E_Set_OSD_State(OSD_STATE_OFF);
+    AT7456E_Set_OSD_State(OSD_SHOW_OFF);
 
     // 设置字符地址
     uint8_t cmah = (uint8_t)(char_addr & 0xFF);     // CA[7:0]
@@ -450,7 +450,7 @@ bool AT7456E_ReadChar_Font(AT7456E_CharFont_t *read_font)
     }
 
     //* 恢复 OSD 显示
-    AT7456E_Set_OSD_State(OSD_STATE_ON);
+    AT7456E_Set_OSD_State(OSD_SHOW_ON);
 
     return true;
 }
@@ -473,7 +473,7 @@ bool AT7456E_WriteChar_Font(const AT7456E_CharFont_t *write_font, AT7456E_WriteF
     bool write_status = false;
     
     // 关闭 OSD 显示
-    AT7456E_Set_OSD_State(OSD_STATE_OFF);
+    AT7456E_Set_OSD_State(OSD_SHOW_OFF);
 
     // 清除SRAM内容
     AT7456E_ClearSRAM();
@@ -514,7 +514,7 @@ bool AT7456E_WriteChar_Font(const AT7456E_CharFont_t *write_font, AT7456E_WriteF
     AT7456E_Read_Reg(AT7456E_DMM);
 
     //* 恢复 OSD 显示
-    AT7456E_Set_OSD_State(OSD_STATE_ON);    
+    AT7456E_Set_OSD_State(OSD_SHOW_ON);    
 
     return write_status;
 }
@@ -535,7 +535,7 @@ bool AT7456E_ModifyChar_Byte_Font(uint16_t char_addr, uint8_t byte_pos, uint8_t 
     bool status = false;
     
     // 关闭OSD显示
-    AT7456E_Set_OSD_State(OSD_STATE_OFF);
+    AT7456E_Set_OSD_State(OSD_SHOW_OFF);
     
     // 设置字符地址
     uint8_t cmah = (uint8_t)(char_addr & 0xFF);      // CA[7:0]
@@ -559,7 +559,7 @@ bool AT7456E_ModifyChar_Byte_Font(uint16_t char_addr, uint8_t byte_pos, uint8_t 
     status = AT7456E_NVM_Operation(AT7456E_RAM_NVM);  // 1010xxxx: 写镜像RAM到NVM
     
     // 8. 重新打开OSD
-    AT7456E_Set_OSD_State(OSD_STATE_ON);
+    AT7456E_Set_OSD_State(OSD_SHOW_ON);
     
     return status;
 }
@@ -583,7 +583,7 @@ bool AT7456E_ModifyChar_ByteArray_Font(uint16_t char_addr, uint8_t byte_pos, con
     bool status = false;
     
     // 1. 关闭OSD显示
-    AT7456E_Set_OSD_State(OSD_STATE_OFF);
+    AT7456E_Set_OSD_State(OSD_SHOW_OFF);
     
     // 3. 计算字符地址
     uint8_t cmah = (uint8_t)(char_addr & 0xFF);
@@ -607,7 +607,7 @@ bool AT7456E_ModifyChar_ByteArray_Font(uint16_t char_addr, uint8_t byte_pos, con
     status = AT7456E_NVM_Operation(AT7456E_RAM_NVM);  // 1010xxxx: 写镜像RAM到NVM
     
     // 重新打开OSD
-    AT7456E_Set_OSD_State(OSD_STATE_ON);
+    AT7456E_Set_OSD_State(OSD_SHOW_ON);
     
     return status;
 }
@@ -650,15 +650,15 @@ void AT7456E_Clear_Show(void){
  * @brief 参考手册21页 "VM0寄存器介绍"
  * @param state OSD显示状态
  */
-void AT7456E_Set_OSD_State(AT7456E_OSD_State state)
+void AT7456E_Set_OSD_State(AT7456E_OSD_Show_State state)
 {
     uint8_t current_vm0 = AT7456E_Read_Reg(AT7456E_VM0);
 
     switch (state) {
-        case OSD_STATE_ON:
+        case OSD_SHOW_ON:
             current_vm0 |= 0x08;   // VM0[3]=1 打开osd显示
             break;
-        case OSD_STATE_OFF:
+        case OSD_SHOW_OFF:
             current_vm0 &= 0xF7;   // VM0[3]=0 关闭osd显示
             break;
         default:

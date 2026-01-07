@@ -81,9 +81,9 @@ typedef enum {
 
 // OSD显示状态枚举
 typedef enum {
-    OSD_STATE_OFF = 0,  // 关闭OSD显示
-    OSD_STATE_ON  = 1   // 开启OSD显示
-} AT7456E_OSD_State;
+    OSD_SHOW_OFF = 0,  // 关闭OSD显示
+    OSD_SHOW_ON  = 1   // 开启OSD显示
+} AT7456E_OSD_Show_State;
 
 /***************** VM1寄存器位定义（视频模式寄存器1）*****************/
 // 位7：背景模式
@@ -112,8 +112,6 @@ typedef enum {
 #define VM1_BLINK_DUTY_1_3      (0x02 << 0)  // 10 = BT : (3×BT)
 #define VM1_BLINK_DUTY_3_1      (0x03 << 0)  // 11 = (3×BT) : BT（默认）
 
-
-
 /**************** 显示字符相关 ****************/
 typedef enum {
     Show_Char_16bit = 0,    // 16位模式
@@ -138,7 +136,6 @@ typedef struct {
     uint8_t     row;                // 显示行号 (0-15)
     uint8_t     col;                // 显示列号 (0-29)
 } AT7456E_ShowChar_AutoInc_t;
-
 
 /**************** 字库相关 ****************/
 // 字库写入模式枚举
@@ -169,7 +166,6 @@ void AT7456E_Write_Reg(uint8_t addr, uint8_t data);
 void AT7456E_Init(void);
 void AT7456E_VM1_Init(void);
 
-
 /**************** 显示字符相关函数实现 ****************/
 bool AT7456E_WriteChar(AT7456E_ShowChar_t show_char);
 bool AT7456E_WriteChar_8bit(AT7456E_ShowChar_t show_char);
@@ -188,7 +184,7 @@ bool AT7456E_ModifyChar_ByteArray_Font(uint16_t char_addr, uint8_t byte_pos, con
 /**************** 工具相关函数实现 ****************/
 void AT7456E_ClearSRAM(void);
 void AT7456E_Clear_Show(void);
-void AT7456E_Set_OSD_State(AT7456E_OSD_State state);
+void AT7456E_Set_OSD_State(AT7456E_OSD_Show_State state);
 bool AT7456E_NVM_Operation(uint8_t operation);
 void AT7456E_Show_Full_Icon(bool hight_addr);
 
@@ -197,11 +193,6 @@ void AT7456E_TEST(void);
 void AT7456E_WriteChar_Test(bool status);
 void AT7456E_WriteChar_AutoInc_Test(void);
 void AT7456E_ModifyChar_Byte_TEST(void);
-
-
-
-
-
 
 #ifdef __cplusplus
 }

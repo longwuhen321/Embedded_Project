@@ -30,7 +30,9 @@ extern "C" {
 #define DIR_READ(a) ((a) | (1 << 7))    // 读操作设置A7=1
 #define DIR_WRITE(a) ((a) & 0x7f)       // 写操作设置A7=0
 
-#define OSD_CHARS_PER_ROW	30  // 每行字符数目
+#define OSD_COLS	30  // 每行字符数目
+#define OSD_ROWS_NTSC   13  // NTSC行数
+#define OSD_ROWS_PAL    16  // PAL行数
 
 // 寄存器地址定义 读时需要与上 0x80;
 #define AT7456E_VM0             0X00
@@ -74,9 +76,9 @@ extern "C" {
 
 // 视频制式枚举
 typedef enum {
-    VIDEO_STD_UNKNOWN   = 0,    // 未知制式
-    VIDEO_STD_PAL       = 1,    // NTSC制式
-    VIDEO_STD_NTSC      = 2     // PAL制式    
+    VIDEO_STD_NTSC      = 0,    // NTSC制式 显示 13行 × 30列 个字符
+    VIDEO_STD_PAL       = 1,    // PAL制式  显示 16行 × 30列 个字符
+    VIDEO_STD_AUTO      = 2     // 自动识别
 } Video_Standard;
 
 // OSD显示状态枚举
@@ -165,6 +167,7 @@ void AT7456E_Write_Reg(uint8_t addr, uint8_t data);
 /**************** AT7456E初始化相关函数 ****************/
 void AT7456E_Init(void);
 void AT7456E_VM1_Init(void);
+void AT7456E_Video_Standard_Set(Video_Standard standard);
 
 /**************** 显示字符相关函数实现 ****************/
 bool AT7456E_WriteChar(AT7456E_ShowChar_t show_char);

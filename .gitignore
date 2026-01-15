@@ -1,2 +1,5 @@
 MDK-ARM/STM32F103C8T6_AT7456E/
 build/
+*.MCM
+*.mcm
+*.ttf

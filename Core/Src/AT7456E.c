@@ -15,6 +15,8 @@
 #include "AT7456E.h"
 #include "AT7456E_font.h"
 
+uint8_t _OSD_Rows = 0;  // 当前视频制式下的OSD行数
+
 /**************** SPI通信 ****************/
 /**
  * @brief 向AT7456E发送SPI数据
@@ -98,25 +100,7 @@ void AT7456E_Init(void)
     AT7456E_NVM_Operation(AT7456E_NVM_RAM);
 
     // 读取状态寄存器，判断视频制式
-    uint8_t read_status;
-    read_status = AT7456E_Read_Reg(AT7456E_STAT);
-    Video_Standard video_standard = (Video_Standard)(read_status & 0x03);
-    switch (video_standard)
-    {
-    case VIDEO_STD_PAL:
-        AT7456E_Write_Reg(AT7456E_VM0,0x48);
-        break;
-    
-    case VIDEO_STD_NTSC:
-        AT7456E_Write_Reg(AT7456E_VM0,0x08);
-        break;
-    
-    default:
-        AT7456E_Write_Reg(AT7456E_VM0,0x48);
-        break;
-    }
-
-    HAL_Delay(1);  
+    AT7456E_Video_Standard_Set(VIDEO_STD_AUTO);
 
     // 配置VM1寄存器
     AT7456E_VM1_Init();
@@ -127,7 +111,7 @@ void AT7456E_Init(void)
     HAL_Delay(1);
     
     // 清屏
-//    AT7456E_ClearSRAM();  
+    // AT7456E_ClearSRAM();  
     AT7456E_Clear_Show();
 
 }
@@ -144,8 +128,50 @@ void AT7456E_VM1_Init(void)
     AT7456E_Write_Reg(AT7456E_VM1,vm1_config);
     HAL_Delay(1);      
 
+}
 
+/**
+ * @brief 设置视频制式
+ * @param standard 视频制式枚举
+ */
+void AT7456E_Video_Standard_Set(Video_Standard standard)
+{
+    switch (standard){
+        case VIDEO_STD_NTSC:{// NTSC制式 VM0[6]=0
+            AT7456E_Write_Reg(AT7456E_VM0,0x00);
+            _OSD_Rows = OSD_ROWS_NTSC;
+            break;
+        }
+        
+        case VIDEO_STD_PAL:{// PAL制式 VM0[6]=1
+            AT7456E_Write_Reg(AT7456E_VM0,0x40);
+            _OSD_Rows = OSD_ROWS_PAL;
+            break;
+        }
 
+        case VIDEO_STD_AUTO:{
+            // 读取状态寄存器，判断视频制式
+            uint8_t read_status;
+            read_status = AT7456E_Read_Reg(AT7456E_STAT);
+            if (read_status & 0x01){// PAL制式
+                AT7456E_Write_Reg(AT7456E_VM0,0x40);
+                _OSD_Rows = OSD_ROWS_PAL;
+            }
+
+            if (read_status & 0x02){// NTSC制式
+                AT7456E_Write_Reg(AT7456E_VM0,0x00);
+                _OSD_Rows = OSD_ROWS_NTSC;
+
+            } 
+            break;    
+        }
+        
+        default:{
+            AT7456E_Write_Reg(AT7456E_VM0,0x00);
+            break;
+        }
+    }
+		HAL_Delay(1); 
 }
 
 /**************** 显示字符相关函数实现 ****************/
@@ -177,7 +203,7 @@ bool AT7456E_WriteChar(AT7456E_ShowChar_t show_char)
 bool AT7456E_WriteChar_8bit(AT7456E_ShowChar_t show_char)
 {
     // 参数检查
-    if (show_char.col >= OSD_CHARS_PER_ROW || show_char.row > 15 || show_char.addr > 511)
+    if (show_char.col >= OSD_COLS || show_char.row > 15 || show_char.addr > 511)
     {
         return false;
     }
@@ -230,7 +256,7 @@ bool AT7456E_WriteChar_8bit(AT7456E_ShowChar_t show_char)
  */
 bool AT7456E_WriteChar_16bit(AT7456E_ShowChar_t show_char)
 {
-    if (show_char.addr > 255 || show_char.col >= OSD_CHARS_PER_ROW || show_char.row >= 16) {
+    if (show_char.addr > 255 || show_char.col >= OSD_COLS || show_char.row >= 16) {
         return false;
     }
 
@@ -279,7 +305,7 @@ bool AT7456E_WriteChar_AutoInc(AT7456E_ShowChar_AutoInc_t show_char_autoinc)
 bool AT7456E_WriteChar_AutoInc_8bit(AT7456E_ShowChar_AutoInc_t show_char_autoinc)
 {
     // 参数检查
-    if (show_char_autoinc.col >= OSD_CHARS_PER_ROW || show_char_autoinc.row > 15)
+    if (show_char_autoinc.col >= OSD_COLS || show_char_autoinc.row > 15)
     {
         return false;
     }
@@ -342,7 +368,7 @@ bool AT7456E_WriteChar_AutoInc_8bit(AT7456E_ShowChar_AutoInc_t show_char_autoinc
 bool AT7456E_WriteChar_AutoInc_16bit(AT7456E_ShowChar_AutoInc_t show_char_autoinc)
 {
     // 参数检查
-    if (show_char_autoinc.col >= OSD_CHARS_PER_ROW || show_char_autoinc.row > 15)
+    if (show_char_autoinc.col >= OSD_COLS || show_char_autoinc.row > 15)
     {
         return false;
     }
